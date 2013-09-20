@@ -44,8 +44,9 @@ module Locomotive
           if @context['with_scope']
             self.modify_with_scope
           end
-
-          @collection ||= @content_type.ordered_entries(@context['with_scope']).visible
+          conditions = @context['with_scope'] || {}
+          conditions["#{@content_type.label_field_name}.#{I18n.locale}"] = { "$ne" => nil } if @content_type.localized?
+          @collection ||= @content_type.ordered_entries(conditions).visible
         end
 
         # Modify the attributes of the with_scope tag so that
@@ -104,7 +105,6 @@ module Locomotive
             model.entries.or({ _slug: value }, { model.label_field_name => value }).first.try(:_id)
           end
         end
-
       end
 
     end

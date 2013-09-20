@@ -57,6 +57,10 @@ module Locomotive
       self.order_by == '_position'
     end
 
+    def localized?
+      self.entries_custom_fields.where(name: label_field_name).first.try(:localized)
+    end
+
     def order_by_definition(reverse_order = false)
       direction = self.order_manually? ? 'asc' : self.order_direction || 'asc'
 

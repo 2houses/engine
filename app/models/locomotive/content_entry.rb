@@ -48,10 +48,15 @@ module Locomotive
     # @return [ String ] The "label" of the content entry
     #
     def _label(type = nil)
-      value = if self._label_field_name
-        self.send(self._label_field_name.to_sym)
+      label_field_name = if self._label_field_name
+        self._label_field_name.to_sym
       else
-        self.send((type || self.content_type).label_field_name.to_sym)
+        (type || self.content_type).label_field_name.to_sym
+      end
+      value = if translated?
+        self.send(label_field_name)
+      else
+        self._label_in_first_available_language
       end
 
       value.respond_to?(:to_label) ? value.to_label : value.to_s
@@ -71,6 +76,11 @@ module Locomotive
       else
         true
       end
+    end
+
+    def _label_in_first_available_language
+      first_available_translation = self.send(:"#{self._label_field_name}_translations").first
+      "#{first_available_translation.last} (#{first_available_translation.first})"
     end
 
     # Return the locales the content entry has been translated to.

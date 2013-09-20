@@ -5,8 +5,13 @@ module Locomotive
       respond_to :xml
 
       def show
-        @pages = current_site.pages.published.order_by(:depth.asc, :position.asc)
-        respond_with @pages
+        if params[:locale]
+          @pages = current_site.pages.published.order_by(:depth.asc, :position.asc)
+          I18n.locale = params[:locale]
+        end
+        respond_with(@pages) do |format|
+          format.xml { render (params[:locale] ? :localized : :show) }
+        end
       end
 
     end

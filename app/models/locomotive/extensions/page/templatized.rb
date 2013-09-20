@@ -116,6 +116,10 @@ module Locomotive
         # @return [ Object ] The documents
         #
         def fetch_target_entries(conditions = {})
+          if conditions[:translated_in] && self.content_type.localized?
+            value = conditions.delete(:translated_in)
+            conditions["#{self.content_type.label_field_name}.#{value}"] = { "$ne" => nil }
+          end
           if self.content_type
             self.content_type.ordered_entries(conditions)
           else

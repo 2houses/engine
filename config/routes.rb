@@ -93,7 +93,7 @@ Rails.application.routes.draw do
   end
 
   # sitemap
-  match '/sitemap.xml'  => 'locomotive/public/sitemaps#show', format: 'xml'
+  match '/(:locale)/sitemap.xml'  => 'locomotive/public/sitemaps#show', format: 'xml', as: :sitemap
 
   # robots.txt
   match '/robots.txt'   => 'locomotive/public/robots#show', format: 'txt'
