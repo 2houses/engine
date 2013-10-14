@@ -144,6 +144,17 @@ module Locomotive
       end
     end
 
+    def destroy_locale(locale)
+      if translated_in.many?
+        content_type.entries_custom_fields.select(&:localized?).each do |entry_custom_field|
+          self.unset("#{entry_custom_field.name}.#{locale}")
+        end
+        self.save(validate: false)
+      else
+        self.destroy
+      end
+    end
+
     # All the content entries no matter the content type they belong to
     # share the same presenter class.
     #

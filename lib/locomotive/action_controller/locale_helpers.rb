@@ -23,7 +23,7 @@ module Locomotive
 
         ::Mongoid::Fields::I18n.locale = session[:content_locale]
 
-        self.setup_i18n_fallbacks
+        # self.setup_i18n_fallbacks
 
         # logger.debug "*** content locale = #{session[:content_locale]} / #{::Mongoid::Fields::I18n.locale}"
       end

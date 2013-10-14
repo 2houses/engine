@@ -8,8 +8,6 @@
 
         %strong= link_to entry_label(content_type, entry), edit_content_entry_path(content_type.slug, entry)
 
-        - unless entry.translated?
-          %span.untranslated= t('locomotive.shared.list.untranslated')
         .more
           %span
             != t('locomotive.content_entries.index.updated_at')

@@ -16,7 +16,7 @@ module Locomotive
     respond_to :csv,  only: [:export]
 
     def index
-      options = { page: params[:page] || 1, per_page: Locomotive.config.ui[:per_page] }
+      options = { page: params[:page] || 1, per_page: Locomotive.config.ui[:per_page], "#{@content_type.label_field_name}.#{session[:content_locale]}" => { "$ne" => nil } }
       @content_entries = if params[:q]
         @content_type.ordered_entries(options.merge(q: params[:q]))
       else
@@ -68,7 +68,7 @@ module Locomotive
 
     def destroy
       @content_entry = @content_type.entries.find(params[:id])
-      @content_entry.destroy
+      @content_entry.destroy_locale(session[:content_locale])
       respond_with @content_entry, location: content_entries_path(@content_type.slug)
     end
 
