@@ -16,15 +16,15 @@ module Locomotive
 
     before_filter :require_site
 
+    before_filter :set_back_office_locale
+
+    before_filter :set_current_content_locale
+
     before_filter :validate_site_membership
 
     load_and_authorize_resource
 
     around_filter :set_timezone
-
-    before_filter :set_back_office_locale
-
-    before_filter :set_current_content_locale
 
     before_filter :set_current_thread_variables
 
@@ -49,10 +49,6 @@ module Locomotive
     end
 
     protected
-
-    def set_timezone(&block)
-      Time.use_zone(current_site.try(:timezone) || 'UTC', &block)
-    end
 
     def set_current_thread_variables
       Thread.current[:account]  = current_locomotive_account
