@@ -16,7 +16,8 @@ module Locomotive
     respond_to :csv,  only: [:export]
 
     def index
-      options = { page: params[:page] || 1, per_page: Locomotive.config.ui[:per_page], "#{@content_type.label_field_name}.#{session[:content_locale]}" => { "$ne" => nil } }
+      options = { page: params[:page] || 1, per_page: Locomotive.config.ui[:per_page] }
+      options.merge!({ "#{@content_type.label_field_name}.#{session[:content_locale]}" => { "$ne" => nil } }) if @content_type.localized?
       @content_entries = if params[:q]
         @content_type.ordered_entries(options.merge(q: params[:q]))
       else
