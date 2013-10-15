@@ -40,6 +40,10 @@ Locomotive.configure do |config|
   # available locales suggested to "localize" a site. You will have to pick up at least one among that list.
   # config.site_locales = %w{en de fr pl pt-BR it nl nb es ru ja cs bg}
 
+  # by default, if a field is not translated in the current locale, the engine will look for its translation in the main locale.
+  # If nil has to be returned instead, the following option should be set to false.
+  # config.i18n_fallbacks = true
+
   # tell if logs are enabled. Useful for debug purpose.
   config.enable_logs = true
 

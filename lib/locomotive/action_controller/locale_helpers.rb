@@ -23,7 +23,7 @@ module Locomotive
 
         ::Mongoid::Fields::I18n.locale = session[:content_locale]
 
-        # self.setup_i18n_fallbacks
+        self.setup_i18n_fallbacks
 
         # logger.debug "*** content locale = #{session[:content_locale]} / #{::Mongoid::Fields::I18n.locale}"
       end
@@ -41,7 +41,13 @@ module Locomotive
 
       def setup_i18n_fallbacks
         (current_site.try(:locales) || []).each do |locale|
-          ::Mongoid::Fields::I18n.fallbacks_for(locale, current_site.locale_fallbacks(locale))
+          locales = if Locomotive.config.i18n_fallbacks?
+            current_site.locale_fallbacks(locale)
+          else
+            [locale]
+          end
+
+          ::Mongoid::Fields::I18n.fallbacks_for(locale, locales)
         end
       end
 

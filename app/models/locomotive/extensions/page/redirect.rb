@@ -8,7 +8,7 @@ module Locomotive
         included do
 
           ## fields ##
-          field :redirect,      type: Boolean, default:  false
+          field :redirect,      type: Boolean, localize: true, default:  false
           field :redirect_url,  type: String,  localize: true
           field :redirect_type, type: Integer, default:  301
 
@@ -17,6 +17,10 @@ module Locomotive
           validates_presence_of :redirect_url,  if: :redirect?
           validates_format_of   :redirect_url,  with: Locomotive::Regexps::URL, allow_blank: true
 
+        end
+
+        def redirect?
+          self.redirect == true
         end
 
       end

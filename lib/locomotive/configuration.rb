@@ -9,6 +9,7 @@ module Locomotive
       reserved_slugs:         %w{stylesheets javascripts assets admin locomotive images api pages edit},
       locales:                %w{en de fr pl pt-BR it nl nb es ru et ja zh-CN cs bg},
       site_locales:           %w{en de fr pl pt-BR it nl nb es ru et ja zh-CN cs bg},
+      i18n_fallbacks:         true,
       cookie_key:             '_locomotive_session',
       enable_logs:            false,
       enable_admin_ssl:       false,
@@ -45,6 +46,10 @@ module Locomotive
 
     def multi_sites?
       self.multi_sites != false
+    end
+
+    def i18n_fallbacks?
+      self.i18n_fallbacks == true
     end
 
     def manage_subdomain?
