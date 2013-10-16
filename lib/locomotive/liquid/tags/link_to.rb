@@ -15,7 +15,7 @@ module Locomotive
               @options[key] = value
             end
           else
-            raise SyntaxError.new("Syntax Error in 'link_to' - Valid syntax: link_to page_handle, locale es (locale is optional)")
+            raise SyntaxError.new("Syntax Error in 'link_to' - Valid syntax: link_to page_handle, locale: es (locale is optional)")
           end
 
           super
