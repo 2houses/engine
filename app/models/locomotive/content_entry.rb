@@ -145,7 +145,7 @@ module Locomotive
     end
 
     def destroy_locale(locale)
-      if translated_in.many?
+      if localized?
         content_type.entries_custom_fields.select(&:localized?).each do |entry_custom_field|
           self.unset("#{entry_custom_field.name}.#{locale}")
         end
