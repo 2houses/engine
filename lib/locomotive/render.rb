@@ -96,7 +96,7 @@ module Locomotive
 
     # Get the Locomotive page matching the request and scoped by the current Locomotive site
     #
-    # @param [ String ] path An optional path overriding the default default behaviour to get a page
+    # @param [ String ] path An optional path overriding the default behaviour to get a page
     #
     # @return [ Object ] The Locomotive::Page
     #
@@ -198,7 +198,8 @@ module Locomotive
         'locales'           => current_site.locales,
         'current_user'      => Locomotive::Liquid::Drops::CurrentUser.new(current_locomotive_account),
         'session'           => Locomotive::Liquid::Drops::SessionProxy.new,
-        'wagon'             => false
+        'wagon'             => false,
+        'editing'           => self.editing_page?
       }
     end
 
@@ -208,12 +209,13 @@ module Locomotive
     #
     def locomotive_default_registers
       {
-        controller:     self,
-        site:           current_site,
-        page:           @page,
-        inline_editor:  self.editing_page?,
-        logger:         Rails.logger,
-        current_locomotive_account: current_locomotive_account
+        controller:                 self,
+        site:                       current_site,
+        page:                       @page,
+        inline_editor:              self.editing_page?,
+        logger:                     Rails.logger,
+        current_locomotive_account: current_locomotive_account,
+        theme_assets_checksum:      Locomotive.config.theme_assets_checksum ? current_site.theme_assets.checksums : {}
       }
     end
 

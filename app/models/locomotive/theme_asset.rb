@@ -40,6 +40,7 @@ module Locomotive
 
     ## named scopes ##
 
+
     ## accessors ##
     attr_accessor   :plain_text_name, :plain_text, :plain_text_type, :performing_plain_text
     attr_accessible :folder, :source, :plain_text_type, :performing_plain_text, :plain_text_name, :plain_text
@@ -111,6 +112,14 @@ module Locomotive
       assets.group_by { |a| a.folder.split('/').first.to_sym }
     end
 
+    def self.checksums
+      {}.tap do |hash|
+        self.only(:local_path, :checksum).each do |asset|
+          hash[asset.local_path] = asset.checksum
+        end
+      end
+    end
+
     def to_liquid
       { url: self.source.url }.merge(self.attributes).stringify_keys
     end
@@ -128,7 +137,7 @@ module Locomotive
       self.folder = ActiveSupport::Inflector.transliterate(self.folder).gsub(/(\s)+/, '_').gsub(/^\//, '').gsub(/\/$/, '')
 
       # folder should begin by a root folder
-      if (self.folder =~ /^(stylesheets|javascripts|images|media|fonts|others)($|\/)+/).nil?
+      if (self.folder =~ /^(stylesheets|javascripts|images|media|fonts|pdfs|others)($|\/)+/).nil?
         self.folder = File.join(self.content_type.to_s.pluralize, self.folder)
       end
     end
@@ -144,7 +153,7 @@ module Locomotive
     def escape_shortcut_urls(text)
       return if text.blank?
 
-      text.gsub(/[("'](\/(stylesheets|javascripts|images|media|fonts|others)\/(([^;.]+)\/)*([a-zA-Z_\-0-9]+)\.[a-z]{2,4})(\?[0-9]+)?[)"']/) do |path|
+      text.gsub(/[("'](\/(stylesheets|javascripts|images|media|fonts|pdfs|others)\/(([^;.]+)\/)*([a-zA-Z_\-0-9]+)\.[a-z]{2,4})(\?[0-9]+)?[)"']/) do |path|
 
         sanitized_path = path.gsub(/[("')]/, '').gsub(/^\//, '').gsub(/\?[0-9]+$/, '')
 

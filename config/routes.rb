@@ -8,6 +8,10 @@ Locomotive::Engine.routes.draw do
     failure_app:  'Locomotive::Devise::FailureApp',
     controllers:  { sessions: 'locomotive/sessions', passwords: 'locomotive/passwords' }
 
+  authenticated :locomotive_account do
+    root to: 'pages#index'
+  end
+
   devise_scope :locomotive_account do
     match '/'         => 'sessions#new'
     delete 'signout'  => 'sessions#destroy', as: :destroy_locomotive_session
@@ -61,6 +65,8 @@ Rails.application.routes.draw do
   namespace :locomotive, module: 'locomotive' do
     namespace :api do
 
+      match 'documentation' => 'documentation#show'
+
       resources :tokens, only: [:create, :destroy]
 
       resource  :current_site, controller: 'current_site', only: [:show, :update, :destroy]
@@ -69,9 +75,9 @@ Rails.application.routes.draw do
 
       resource  :my_account, controller: 'my_account', only: :show
 
-      resources :accounts, only: [:index, :show, :create, :destroy]
-
       with_options only: [:index, :show, :create, :update, :destroy] do |api|
+
+        api.resources :accounts
 
         api.resources :sites
 

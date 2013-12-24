@@ -1,16 +1,16 @@
 module Locomotive
   module Liquid
     module Tags
-      class PathTo < LinkTo
+      class PathTo < ::Liquid::Tag
+
+        include PathHelper
 
         def render(context)
-          site  = context.registers[:site]
+          render_path(context)
+        end
 
-          if page = self.retrieve_page_from_handle(site, context)
-            self.public_page_url(site, page)
-          else
-            '' # no page found
-          end
+        def wrong_syntax!
+          raise SyntaxError.new("Syntax Error in 'path_to' - Valid syntax: path_to <page|page_handle|content_entry>(, locale: [fr|de|...], with: <page_handle>")
         end
 
       end
