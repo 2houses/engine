@@ -42,6 +42,7 @@ module Locomotive
     after_initialize    :set_default_raw_template
     before_save         :build_fullpath
     before_save         :record_current_locale
+    after_save          :unset_empty_raw_template_translations
     before_destroy      :do_not_remove_index_and_404_pages
     after_save          :update_children
 
@@ -129,6 +130,12 @@ module Locomotive
       self.locales ||= []
       self.locales << ::Mongoid::Fields::I18n.locale
       self.locales.uniq!
+    end
+
+    def unset_empty_raw_template_translations
+      I18n.available_locales.each do |locale|
+        self.unset("raw_template.#{locale}") if self.raw_template_translations[locale.to_s].empty?
+      end
     end
 
   end
