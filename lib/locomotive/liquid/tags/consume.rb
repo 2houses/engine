@@ -24,9 +24,8 @@ module Locomotive
           else
             raise ::Liquid::SyntaxError.new("Syntax Error in 'consume' - Valid syntax: consume <var> from \"<url>\" [username: value, password: value]")
           end
-
-          @local_cache_key = self.hash
-
+          @cache_key = Digest::SHA1.hexdigest("#{I18n.locale}/#{@target}")
+          @local_cache_key = "#{I18n.locale}/#{self.hash}"
           super
         end
 
