@@ -43,13 +43,13 @@ module Locomotive
         #
         # @return [ String ] The localized fullpath according to the current locale
         #
-        def localized_page_fullpath(page, locale = nil)
+        def localized_page_fullpath(page, locale = nil, force_locale = false)
           return nil if page.fullpath_translations.blank?
 
           locale    = (locale || I18n.locale).to_s
           fullpath  = page.fullpath_translations[locale] || page.fullpath_translations[self.default_locale]
 
-          if locale == self.default_locale.to_s # no need to specify the locale
+          if locale == self.default_locale.to_s && !force_locale # no need to specify the locale
             page.index? ? '' : fullpath
           elsif page.index? # avoid /en/index or /fr/index, prefer /en or /fr instead
             locale
