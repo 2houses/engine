@@ -12,9 +12,11 @@ module Locomotive
         @domain = ActionMailer::Base.default_url_options[:host] || 'localhost'
       end
 
-      subject = t('locomotive.notifications.new_content_entry.subject', domain: @domain, type: @type.name, locale: account.locale)
+      subject = "[#{I18n.locale}] #{t('locomotive.notifications.new_content_entry.subject', domain: @domain, type: @type.name, locale: account.locale)}"
 
-      mail subject: subject, to: account.email
+      email_attributes = { subject: subject, to: account.email }
+      email_attributes.merge!({ from: entry.email }) if entry.respond_to?(:email)
+      mail email_attributes
     end
   end
 
