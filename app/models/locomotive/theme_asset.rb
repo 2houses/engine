@@ -18,7 +18,7 @@ module Locomotive
     mount_uploader :source, ThemeAssetUploader, mount_on: :source_filename, validate_integrity: true
 
     ## associations ##
-    belongs_to :site, class_name: 'Locomotive::Site', autosave: false
+    belongs_to :site, class_name: 'Locomotive::Site', validate: false, autosave: false
 
     ## indexes ##
     index site_id:  1
@@ -73,11 +73,8 @@ module Locomotive
     end
 
     def plain_text
-      if RUBY_VERSION =~ /1\.9/
-        @plain_text ||= (self.source.read.force_encoding('UTF-8') rescue nil)
-      else
-        @plain_text ||= self.source.read
-      end
+      # only for ruby >= 1.9.x. Forget about ruby 1.8
+      @plain_text ||= (self.source.read.force_encoding('UTF-8') rescue nil)
     end
 
     def plain_text_type
@@ -158,7 +155,8 @@ module Locomotive
         sanitized_path = path.gsub(/[("')]/, '').gsub(/^\//, '').gsub(/\?[0-9]+$/, '')
 
         if asset = self.site.theme_assets.where(local_path: sanitized_path).first
-          "#{path.first}#{asset.source.url}#{path.last}"
+          timestamp = self.updated_at.to_i
+          "#{path.first}#{asset.source.url}?#{timestamp}#{path.last}"
         else
           path
         end
