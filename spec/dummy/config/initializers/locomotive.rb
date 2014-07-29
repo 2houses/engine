@@ -43,6 +43,9 @@ Locomotive.configure do |config|
   # If nil has to be returned instead, the following option should be set to false.
   # config.i18n_fallbacks = true
 
+  # by default, your default locale willl not require the locale in url. You can change this by setting the next value to true
+  # config.force_locale = false
+
   # tell if logs are enabled. Useful for debug purpose.
   config.enable_logs = true
 

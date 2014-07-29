@@ -10,6 +10,7 @@ module Locomotive
       locales:                %w{en de fr pl pt-BR it nl nb es ru et ja zh-CN cs bg sk sr},
       site_locales:           %w{en de fr pl pt-BR it nl nb es ru et ja zh-CN cs bg sk sr},
       i18n_fallbacks:         true,
+      force_locale:           false,
       cookie_key:             '_locomotive_session',
       enable_logs:            false,
       enable_admin_ssl:       false,

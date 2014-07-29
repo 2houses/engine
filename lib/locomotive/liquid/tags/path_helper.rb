@@ -66,7 +66,7 @@ module Locomotive
         end
 
         def public_page_fullpath(site, page)
-          fullpath = site.localized_page_fullpath(page, self.locale, @options['force_locale'])
+          fullpath = site.localized_page_fullpath(page, self.locale)
 
           if page.templatized?
             fullpath.gsub!('content_type_template', page.content_entry._slug)

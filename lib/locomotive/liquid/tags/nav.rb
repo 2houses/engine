@@ -89,7 +89,7 @@ module Locomotive
           label = %{#{icon if @options[:icon] != 'after' }#{title}#{icon if @options[:icon] == 'after' }}
 
           link_options = caret = ''
-          href = File.join('/', @site.localized_page_fullpath(page, nil, @options[:force_locale]))
+          href = File.join('/', @site.localized_page_fullpath(page, nil))
 
           if render_children_for_page?(page, depth) && bootstrap?
             css           += ' dropdown'
