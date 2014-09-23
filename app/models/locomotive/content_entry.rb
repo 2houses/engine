@@ -74,7 +74,7 @@ module Locomotive
     #
     def translated?
       if self.respond_to?(:"#{self._label_field_name}_translations")
-        self.send(:"#{self._label_field_name}_translations").key?(::Mongoid::Fields::I18n.locale.to_s) #rescue false
+        self.send(:"#{self._label_field_name}_translations").key?(::Mongoid::Fields::I18n.locale.to_s) rescue false
       else
         true
       end
